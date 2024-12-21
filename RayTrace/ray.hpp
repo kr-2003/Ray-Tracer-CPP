@@ -6,6 +6,7 @@
 namespace abRT {
     class Ray {
         public:
+            Ray();
             Ray(const abVector<double>& point1, const abVector<double>& point2);
 
             abVector<double> GetPoint1();

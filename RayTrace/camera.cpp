@@ -89,10 +89,14 @@ void abRT::Camera::UpdateCameraGeometry() {
 	m_projectionScreenV = m_projectionScreenV * (m_cameraHorzSize / m_cameraAspectRatio);
 }
 
-abRT::Ray abRT::Camera::GenerateRay(double proScreenX, double proScreenY) {
+bool abRT::Camera::GenerateRay(double proScreenX, double proScreenY, abRT::Ray &cameraRay) {
     // arguments are in u, v coordinate system;
     abVector<double> screenWorldCoordinate = m_projectionScreenCentre + (m_projectionScreenU * proScreenX);
     screenWorldCoordinate = screenWorldCoordinate + (m_projectionScreenV * proScreenY);
 
-    return abRT::Ray(m_cameraPosition, screenWorldCoordinate);
+    cameraRay.m_point1 = m_cameraPosition;
+    cameraRay.m_point2 = screenWorldCoordinate;
+    cameraRay.m_lab = screenWorldCoordinate - m_cameraPosition;
+
+    return true;
 }

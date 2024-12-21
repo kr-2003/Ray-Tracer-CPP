@@ -26,7 +26,7 @@ namespace abRT {
             double GetHorzSize();
             double GetAspect();
 
-            Ray GenerateRay(double proScreenX, double proScreenY);
+            bool GenerateRay(double proScreenX, double proScreenY, abRT::Ray &cameraRay);
 
             void UpdateCameraGeometry();
 
