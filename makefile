@@ -14,7 +14,7 @@ LIB_PATHS = -L/opt/homebrew/Cellar/sdl2/2.30.10/lib
 LIBS = -lSDL2
 
 # Source files
-SRC = main.cpp CApp.cpp
+SRC = main.cpp CApp.cpp $(wildcard RayTrace/*.cpp)
 
 # Object directory
 OBJDIR = .objs
