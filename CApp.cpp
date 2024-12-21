@@ -65,6 +65,7 @@ void CApp::OnRender() {
     // m_scene.Render(m_image);
     // m_image.Display();
     // SDL_RenderPresent(pRenderer);
+    
 }
 
 void CApp::OnExit() {

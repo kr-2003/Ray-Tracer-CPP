@@ -40,12 +40,18 @@ bool abRT::Scene::Render(abImage &outputImage) {
             bool validInt = m_testSphere.TestIntersections(cameraRay, intPoint, localNormal, localColor);
 
             if(validInt) {
-                outputImage.SetPixel(x, y, 255.0, 0.0, 0.0);
+                double dist = (intPoint - cameraRay.m_point1).Norm();
+                if(dist > maxDist) maxDist = dist;
+                if(dist < minDist) minDist = dist;
+                outputImage.SetPixel(x, y, 0.0, 0.0, 255.0 - ((dist - 9.0) / 0.94605) * 255.0);
             } else {
                 outputImage.SetPixel(x, y, 0.0, 0.0, 0.0);
             }
         }
     }
+
+    std::cout << "Minimum distance: " << minDist << std::endl;
+	std::cout << "Maximum distance: " << maxDist << std::endl;
 
     return 1;
 } 

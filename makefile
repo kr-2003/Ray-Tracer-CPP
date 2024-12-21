@@ -3,7 +3,7 @@ linkTarget = programfile
 
 # Define compiler and standard
 CXX = clang++
-CXXFLAGS = -std=c++17 -stdlib=libc++
+CXXFLAGS = -std=c++17 -O3 -flto -Ofast
 
 # Include paths
 INCLUDE_PATHS = \

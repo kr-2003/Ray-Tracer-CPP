@@ -23,9 +23,9 @@ class abVector{
 
         abVector<T> Normalized() const;
 
-        abVector<T> operator+ (const abVector<T>& rhs);
-        abVector<T> operator- (const abVector<T>& rhs);
-        abVector<T> operator* (const T& rhs);
+        abVector<T> operator+ (const abVector<T>& rhs) const;
+        abVector<T> operator- (const abVector<T>& rhs) const;
+        abVector<T> operator* (const T& rhs) const;
 
         template<class U>
         friend abVector<U> operator* (const U& lhs, const abVector<U>& rhs);
@@ -115,7 +115,7 @@ abVector<T> abVector<T>::Normalized() const {
 
 
 template<class T>
-abVector<T> abVector<T>::operator+ (const abVector<T>& rhs) {
+abVector<T> abVector<T>::operator+ (const abVector<T>& rhs) const {
     if(GetNumDims() != rhs.GetNumDims()) {
         throw std::invalid_argument("Dimensions of lhs and rhs should be equal for addition.");
     } else {
@@ -131,7 +131,7 @@ abVector<T> abVector<T>::operator+ (const abVector<T>& rhs) {
 }
 
 template<class T>
-abVector<T> abVector<T>::operator- (const abVector<T>& rhs) {
+abVector<T> abVector<T>::operator- (const abVector<T>& rhs) const {
     if(GetNumDims() != rhs.GetNumDims()) {
         throw std::invalid_argument("Dimensions of lhs and rhs should be equal for subtraction.");
     } else {
@@ -147,7 +147,7 @@ abVector<T> abVector<T>::operator- (const abVector<T>& rhs) {
 }
 
 template<class T>
-abVector<T> abVector<T>::operator* (const T& rhs) {
+abVector<T> abVector<T>::operator* (const T& rhs) const {
     int n = GetNumDims();
     std::vector<T> res;
     for(int i = 0; i < n; i++) {

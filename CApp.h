@@ -17,7 +17,7 @@ class CApp
         void OnLoop();
         void OnRender();
         void OnExit();
-
+        
     private:
         abImage m_image;
         abRT::Scene m_scene;
