@@ -24,24 +24,25 @@ bool abRT::Scene::Render(abImage &outputImage) {
     abVector<double> localNormal {3};
     abVector<double> localColor {3};
 
-    double xFact = (static_cast<double>(1.0) / static_cast<double>(xSize) / 2.0);
-    double yFact = (static_cast<double>(1.0) / static_cast<double>(ySize) / 2.0);
+    double xFact = (1.0 / static_cast<double>(xSize)) * 2.0;
+    double yFact = (1.0 / static_cast<double>(ySize)) * 2.0;
 
     double minDist = 1e6;
     double maxDist = 0;
 
     for(int x = 0; x < xSize; x++) {
         for(int y = 0; y < ySize; y++) {
-            double normX = (static_cast<double>(x) * xFact);
-            double normY = (static_cast<double>(y) * yFact);
+            float normX = (static_cast<double>(x) * xFact) - 1.0;
+            float normY = (static_cast<double>(y) * yFact) - 1.0;
 
             m_camera.GenerateRay(normX, normY, cameraRay);
+            
             bool validInt = m_testSphere.TestIntersections(cameraRay, intPoint, localNormal, localColor);
 
             if(validInt) {
                 outputImage.SetPixel(x, y, 255.0, 0.0, 0.0);
             } else {
-                outputImage.SetPixel(x, y, 255.0, 0.0, 0.0);
+                outputImage.SetPixel(x, y, 0.0, 0.0, 0.0);
             }
         }
     }

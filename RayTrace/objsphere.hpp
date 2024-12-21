@@ -11,7 +11,7 @@ namespace abRT {
             virtual ~ObjSphere() override;
 
 
-            virtual bool TestIntersections(const Ray &castRay, abVector<double> &intPoint, abVector<double> &localNormal, abVector<double> &localColor);
+            virtual bool TestIntersections(const Ray &castRay, abVector<double> &intPoint, abVector<double> &localNormal, abVector<double> &localColor) override;
         
         private:
 

@@ -22,7 +22,6 @@ bool abRT::ObjSphere::TestIntersections(const Ray &castRay, abVector<double> &in
     double c = abVector<double>::dot(castRay.m_point1, castRay.m_point1) - 1.0;
 
     double D_Sq = b * b - 4.0 * c;
-
     if(D_Sq < 0.0) return false;
     return true;
 }
