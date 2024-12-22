@@ -12,6 +12,16 @@ abRT::Scene::Scene() {
     m_camera.SetHorzSize(0.25);
     m_camera.SetAspect(16.0 / 9.0);
     m_camera.UpdateCameraGeometry();
+
+    // test sphere
+    m_objectList.push_back(std::make_shared<abRT::ObjSphere>(abRT::ObjSphere()));
+
+    // test light
+    m_lightList.push_back(std::make_shared<abRT::PointLight>(abRT::PointLight()));
+    tempdata = {5.0, -10.0, -5.0};
+    m_lightList.at(0) -> m_location = abVector<double> {tempdata};
+    tempdata = {255.0, 255.0, 255.0};
+    m_lightList.at(0) -> m_color = abVector<double> {tempdata};
 }
 
 bool abRT::Scene::Render(abImage &outputImage) {
@@ -36,16 +46,30 @@ bool abRT::Scene::Render(abImage &outputImage) {
             float normY = (static_cast<double>(y) * yFact) - 1.0;
 
             m_camera.GenerateRay(normX, normY, cameraRay);
-            
-            bool validInt = m_testSphere.TestIntersections(cameraRay, intPoint, localNormal, localColor);
 
-            if(validInt) {
-                double dist = (intPoint - cameraRay.m_point1).Norm();
-                if(dist > maxDist) maxDist = dist;
-                if(dist < minDist) minDist = dist;
-                outputImage.SetPixel(x, y, 0.0, 0.0, 255.0 - ((dist - 9.0) / 0.94605) * 255.0);
-            } else {
-                outputImage.SetPixel(x, y, 0.0, 0.0, 0.0);
+            for(auto &currObject : m_objectList) {
+                            
+                bool validInt = currObject->TestIntersections(cameraRay, intPoint, localNormal, localColor);
+
+                if(validInt) {
+                    double intensity;
+                    abVector<double> color{3};
+                    bool validIllum = false;
+                    for(auto &currentLight : m_lightList) {
+                        validIllum = currentLight->ComputeIllumination(intPoint, localNormal, m_objectList, currObject, color, intensity);
+                    }
+                    double dist = (intPoint - cameraRay.m_point1).Norm();
+                    if(dist > maxDist) maxDist = dist;
+                    if(dist < minDist) minDist = dist;
+                    if(validIllum) {
+                        outputImage.SetPixel(x, y, 255.0 * intensity, 0.0, 0.0);
+                    } else {
+                        outputImage.SetPixel(x, y, 0.0, 0.0, 0.0);
+                    }
+                    
+                } else {
+                    outputImage.SetPixel(x, y, 0.0, 0.0, 0.0);
+                }
             }
         }
     }

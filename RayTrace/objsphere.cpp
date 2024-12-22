@@ -35,6 +35,10 @@ bool abRT::ObjSphere::TestIntersections(const abRT::Ray &castRay, abVector<doubl
             } else {
                 intPoint = castRay.m_point1 + (vhat * t2);
             }
+
+            // computing the local normal(easy for sphere localed at origin)
+            localNormal = intPoint;
+            localNormal = localNormal.Normalized();
         }
         return true;
     }

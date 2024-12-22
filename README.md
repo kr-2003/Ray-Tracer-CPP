@@ -12,6 +12,11 @@ Ray tracing is a rendering technique used to generate images by tracing the path
 The result is a high-quality image, but with increased computational cost compared to rasterization techniques.
 
 ## Progress So Far
-**[22/12/2024]**
+**[21/12/2024]**
 
 ![Ray Tracer Example](./public/sphere-1.png)
+
+**[22/12/2024]** 
+- Added point light source.
+
+![Ray Tracer Example](./public/sphere-2.png)
