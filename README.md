@@ -20,3 +20,8 @@ The result is a high-quality image, but with increased computational cost compar
 - Added point light source.
 
 ![Ray Tracer Example](./public/sphere-2.png)
+
+
+- Added geometric transformations.
+
+![Ray Tracer Example](./public/sphere-3.png)

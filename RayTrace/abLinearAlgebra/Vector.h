@@ -10,7 +10,7 @@ template<class T>
 class abVector{
     public:
         abVector();
-        abVector(std::vector<T>& inputData);
+        abVector(const std::vector<T>& inputData);
         abVector(int numdims);
         ~abVector();
 
@@ -49,7 +49,7 @@ abVector<T>::abVector() {
 }
 
 template<class T>
-abVector<T>::abVector(std::vector<T>& inputData) {
+abVector<T>::abVector(const std::vector<T>& inputData) {
     m_nDims = inputData.size();
     m_vectorData = inputData;
 }

@@ -15,6 +15,10 @@ bool abRT::ObjectBase::TestIntersections(const Ray &castRay, abVector<double> &i
     return false;
 }
 
+void abRT::ObjectBase::SetTransformMatrix(const abRT::GTForm &transformMatrix) {
+    m_transformMatrix = transformMatrix;
+}
+
 bool abRT::ObjectBase::CloseEnough(const double f1, const double f2) {
     return fabs(f1 - f2) < EPSILON;
 }

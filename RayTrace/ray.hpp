@@ -9,9 +9,9 @@ namespace abRT {
             Ray();
             Ray(const abVector<double>& point1, const abVector<double>& point2);
 
-            abVector<double> GetPoint1();
-            abVector<double> GetPoint2();
-            abVector<double> GetRay   ();
+            abVector<double> GetPoint1() const;
+            abVector<double> GetPoint2() const;
+            abVector<double> GetRay   () const;
 
         public:
             abVector<double> m_point1 {3};

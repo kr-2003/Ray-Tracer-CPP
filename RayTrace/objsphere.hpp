@@ -2,6 +2,7 @@
 #define OBJSPHERE_H
 
 #include "objectbase.hpp"
+#include "gtfm.hpp"
 
 namespace abRT {
     class ObjSphere : public ObjectBase {

@@ -15,6 +15,36 @@ abRT::Scene::Scene() {
 
     // test sphere
     m_objectList.push_back(std::make_shared<abRT::ObjSphere>(abRT::ObjSphere()));
+    m_objectList.push_back(std::make_shared<abRT::ObjSphere>(abRT::ObjSphere()));
+    m_objectList.push_back(std::make_shared<abRT::ObjSphere>(abRT::ObjSphere()));
+
+    abRT::GTForm testMatrix1, testMatrix2, testMatrix3;
+
+    testMatrix1.SetTransform(
+        abVector<double> {std::vector<double>{-1.5, 0.0, 0.0}},
+        abVector<double> {std::vector<double>{0.0, 0.0, 0.0}},
+        abVector<double> {std::vector<double>{0.5, 0.5, 0.75}}
+    );
+
+    testMatrix2.SetTransform(
+        abVector<double> {std::vector<double>{0.0, 0.0, 0.0}},
+        abVector<double> {std::vector<double>{0.0, 0.0, 0.0}},
+        abVector<double> {std::vector<double>{0.75, 0.5, 0.5}}
+    );
+
+    testMatrix3.SetTransform(
+        abVector<double> {std::vector<double>{1.5, 0.0, 0.0}},
+        abVector<double> {std::vector<double>{0.0, 0.0, 0.0}},
+        abVector<double> {std::vector<double>{0.75, 0.75, 0.75}}
+    );
+
+    m_objectList.at(0) -> SetTransformMatrix(testMatrix1);
+    m_objectList.at(1) -> SetTransformMatrix(testMatrix2);
+    m_objectList.at(2) -> SetTransformMatrix(testMatrix3);
+
+    m_objectList.at(0) -> m_baseColor = abVector<double> {std::vector<double>{64.0, 128.0, 200.0}};
+    m_objectList.at(1) -> m_baseColor = abVector<double> {std::vector<double>{255.0, 128.0, 0.0}};
+    m_objectList.at(2) -> m_baseColor = abVector<double> {std::vector<double>{255.0, 200.0, 0.0}};
 
     // test light
     m_lightList.push_back(std::make_shared<abRT::PointLight>(abRT::PointLight()));
@@ -62,13 +92,13 @@ bool abRT::Scene::Render(abImage &outputImage) {
                     if(dist > maxDist) maxDist = dist;
                     if(dist < minDist) minDist = dist;
                     if(validIllum) {
-                        outputImage.SetPixel(x, y, 255.0 * intensity, 0.0, 0.0);
+                        outputImage.SetPixel(x, y, 255.0 * intensity, localColor.GetElement(1) * intensity, localColor.GetElement(2) * intensity);
                     } else {
-                        outputImage.SetPixel(x, y, 0.0, 0.0, 0.0);
+                        // nothing
                     }
                     
                 } else {
-                    outputImage.SetPixel(x, y, 0.0, 0.0, 0.0);
+                    // nothing
                 }
             }
         }
