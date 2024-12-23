@@ -19,16 +19,36 @@ bool abRT::PointLight::ComputeIllumination(const abVector<double> &intPoint, con
 
     abVector<double> startPoint = intPoint;
 
-    // assume local normal is unit vector
-    double angle = acos(abVector<double>::dot(localNormal, lightDir));
 
-    if(angle > M_PI / 2.0) {
+    abRT::Ray lightRay (startPoint, startPoint + lightDir);
+
+    abVector<double> poi {3};
+    abVector<double> poiNormal {3};
+    abVector<double> poiColor {3};
+    bool validInt = false;
+    for(auto sceneObject : objectList) {
+        if(sceneObject != currObject) {
+            validInt = sceneObject -> TestIntersections(lightRay, poi, poiNormal, poiColor);
+            if(validInt) {
+                break;
+            }
+        }
+    }
+
+    if(!validInt) {
+        double angle = acos(abVector<double>::dot(localNormal, lightDir));
+        if(angle > M_PI / 2.0) {
+            color = m_color;
+            intensity = 0.0;
+            return false;
+        } else {
+            color = m_color;
+            intensity = m_intensity * (1.0 - (2.0 * angle / M_PI));
+            return true;
+        }
+    } else {
         color = m_color;
         intensity = 0.0;
         return false;
-    } else {
-        color = m_color;
-        intensity = m_intensity * (1.0 - (2.0 * angle / M_PI));
-        return true;
     }
 }

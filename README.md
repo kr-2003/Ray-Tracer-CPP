@@ -30,3 +30,11 @@ The result is a high-quality image, but with increased computational cost compar
 - Added plane.
 
 ![Ray Tracer Example](./public/image-4.png)
+
+- Shadows
+
+![Ray Tracer Example](./public/image-5.png)
+
+- Multiple lights and shadows
+
+![Ray Tracer Example](./public/image-6.png)
