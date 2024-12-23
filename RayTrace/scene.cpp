@@ -3,7 +3,7 @@
 
 abRT::Scene::Scene() {
     //configure the camera
-    std::vector<double> tempdata = {0.0, -10.0, 0.0};
+    std::vector<double> tempdata = {0.0, -10.0, -1.0};
     m_camera.SetPosition(abVector<double>(tempdata));
     tempdata = {0.0, 0.0, 0.0};
     m_camera.SetLookAt(abVector<double>(tempdata));
@@ -17,6 +17,10 @@ abRT::Scene::Scene() {
     m_objectList.push_back(std::make_shared<abRT::ObjSphere>(abRT::ObjSphere()));
     m_objectList.push_back(std::make_shared<abRT::ObjSphere>(abRT::ObjSphere()));
     m_objectList.push_back(std::make_shared<abRT::ObjSphere>(abRT::ObjSphere()));
+
+    // test plane
+    m_objectList.push_back(std::make_shared<abRT::ObjPlane>(abRT::ObjPlane()));
+    m_objectList.at(3) -> m_baseColor = abVector<double> {std::vector<double>{128.0, 128.0, 128.0}};
 
     abRT::GTForm testMatrix1, testMatrix2, testMatrix3;
 

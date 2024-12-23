@@ -25,3 +25,8 @@ The result is a high-quality image, but with increased computational cost compar
 - Added geometric transformations.
 
 ![Ray Tracer Example](./public/sphere-3.png)
+
+**[22/12/2024]** 
+- Added plane.
+
+![Ray Tracer Example](./public/image-4.png)
