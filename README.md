@@ -38,3 +38,9 @@ The result is a high-quality image, but with increased computational cost compar
 - Multiple lights and shadows
 
 ![Ray Tracer Example](./public/image-6.png)
+
+**[25/12/2024]**
+
+- Added reflection and materials.
+
+![Ray Tracer Example](./public/image-7.png)

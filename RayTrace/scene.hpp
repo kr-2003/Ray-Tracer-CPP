@@ -15,6 +15,7 @@ namespace abRT {
         public:
             Scene();
             bool Render(abImage &outputImage);
+            bool CastRay(abRT::Ray &castRay, std::shared_ptr<abRT::ObjectBase> &closestObject, abVector<double> &closestIntPoint, abVector<double> &closestLocalNormal, abVector<double> &closestLocalColor);
 
         private:
         

@@ -1,7 +1,31 @@
 // scene.cpp
 #include "scene.hpp"
+#include "materialbase.hpp"
+#include "simplematerial.hpp"
 
 abRT::Scene::Scene() {
+
+    // creating some test materials
+    auto testMaterial = std::make_shared<abRT::SimpleMaterial> (abRT::SimpleMaterial());
+    testMaterial->m_baseColor = abVector<double> {std::vector<double>{0.25, 0.5, 0.8}};
+    testMaterial->m_reflectivity = 0.1;
+    testMaterial->m_shininess = 10.0;
+
+    auto testMaterial2 = std::make_shared<abRT::SimpleMaterial> (abRT::SimpleMaterial());
+    testMaterial2->m_baseColor = abVector<double> {std::vector<double>{1.0, 0.5, 0.0}};
+    testMaterial2->m_reflectivity = 0.75;
+    testMaterial2->m_shininess = 10.0;
+
+    auto testMaterial3 = std::make_shared<abRT::SimpleMaterial> (abRT::SimpleMaterial());
+    testMaterial3->m_baseColor = abVector<double> {std::vector<double>{1.0, 0.8, 0.0}};
+    testMaterial3->m_reflectivity = 0.25;
+    testMaterial3->m_shininess = 10.0;
+
+    auto floorMaterial = std::make_shared<abRT::SimpleMaterial> (abRT::SimpleMaterial());
+    floorMaterial->m_baseColor = abVector<double> {std::vector<double>{1.0, 1.0, 1.0}};
+    floorMaterial->m_reflectivity = 0.5;
+    floorMaterial->m_shininess = 0.0;
+
     //configure the camera
     std::vector<double> tempdata = {0.0, -10.0, -2.0};
     m_camera.SetPosition(abVector<double>(tempdata));
@@ -33,19 +57,19 @@ abRT::Scene::Scene() {
     testMatrix1.SetTransform(
         abVector<double> {std::vector<double>{-1.5, 0.0, 0.0}},
         abVector<double> {std::vector<double>{0.0, 0.0, 0.0}},
-        abVector<double> {std::vector<double>{0.5, 0.5, 0.75}}
+        abVector<double> {std::vector<double>{0.5, 0.5, 0.5}}
     );
 
     testMatrix2.SetTransform(
         abVector<double> {std::vector<double>{0.0, 0.0, 0.0}},
         abVector<double> {std::vector<double>{0.0, 0.0, 0.0}},
-        abVector<double> {std::vector<double>{0.75, 0.5, 0.5}}
+        abVector<double> {std::vector<double>{0.5, 0.5, 0.5}}
     );
 
     testMatrix3.SetTransform(
         abVector<double> {std::vector<double>{1.5, 0.0, 0.0}},
         abVector<double> {std::vector<double>{0.0, 0.0, 0.0}},
-        abVector<double> {std::vector<double>{0.75, 0.75, 0.75}}
+        abVector<double> {std::vector<double>{0.5, 0.5, 0.5}}
     );
 
     m_objectList.at(0) -> SetTransformMatrix(testMatrix1);
@@ -57,6 +81,10 @@ abRT::Scene::Scene() {
 	m_objectList.at(1) -> m_baseColor = abVector<double>{std::vector<double>{1.0, 0.5, 0.0}};
 	m_objectList.at(2) -> m_baseColor = abVector<double>{std::vector<double>{1.0, 0.8, 0.0}};
 
+    m_objectList.at(0) -> AssignMaterial(testMaterial3);
+    m_objectList.at(1) -> AssignMaterial(testMaterial);
+    m_objectList.at(2) -> AssignMaterial(testMaterial2);
+    m_objectList.at(3) -> AssignMaterial(floorMaterial);
     // test light
     // Construct a test light.
 	m_lightList.push_back(std::make_shared<abRT::PointLight> (abRT::PointLight()));
@@ -96,58 +124,29 @@ bool abRT::Scene::Render(abImage &outputImage) {
             m_camera.GenerateRay(normX, normY, cameraRay);
 
             std::shared_ptr<abRT::ObjectBase> closestObject;
+
             abVector<double> closestIntPoint {3};
             abVector<double> closestLocalNormal {3};
             abVector<double> closestLocalColor {3};
-            double minDist = 1e6;
-            bool intersectionFound = false;
-            for(auto currentObject : m_objectList) {
-                bool validInt = currentObject -> TestIntersections(cameraRay, intPoint, localNormal, localColor);
 
-                if(validInt) {
-                    intersectionFound = true;
+            bool intersectionFound = CastRay(cameraRay, closestObject, closestIntPoint, closestLocalNormal, closestLocalColor);
 
-                    double dist = (intPoint - cameraRay.m_point1).Norm();
-
-                    if(dist < minDist) {
-                        minDist = dist;
-                        closestObject = currentObject;
-                        closestLocalNormal = localNormal;
-                        closestIntPoint = intPoint;
-                        closestLocalColor = localColor;
-                    }
-                }
-            }
 
             if(intersectionFound) {
-                double intensity;
-                abVector<double> color {3};
-                double red = 0.0;
-                double green = 0.0;
-                double blue = 0.0;
-                bool validIllum = false;
-                bool illumFound = false;
+                if(closestObject -> m_hasMaterial) {
+                    abRT::MaterialBase::m_reflectionRayCount = 0;
 
-                for(auto currentLight : m_lightList) {
-                    validIllum = currentLight -> ComputeIllumination(closestIntPoint, closestLocalNormal, m_objectList, closestObject, color, intensity);
+                    abVector<double> color = closestObject -> m_pMaterial -> ComputeColor(m_objectList, m_lightList, closestObject, closestIntPoint, closestLocalNormal, cameraRay);
 
-                    if(validIllum) {
-                        illumFound = true;
-						red += color.GetElement(0) * intensity;
-						green += color.GetElement(1) * intensity;
-						blue += color.GetElement(2) * intensity;
-                    }
+                    outputImage.SetPixel(x, y, color.GetElement(0), color.GetElement(1), color.GetElement(2));
+
+                } else {
+                    abVector<double> matColor = abRT::MaterialBase::ComputeDiffuseColor(m_objectList, m_lightList, closestObject, closestIntPoint, closestLocalNormal, closestObject->m_baseColor);
+
+                    outputImage.SetPixel(x, y, matColor.GetElement(0), matColor.GetElement(1), matColor.GetElement(2));
                 }
-
-                if(validIllum) {
-                    red *= closestLocalColor.GetElement(0);
-					green *= closestLocalColor.GetElement(1);
-					blue *= closestLocalColor.GetElement(2);
-					outputImage.SetPixel(x, y, red, green, blue);
-                }
+                
             }
-            
-               
         }
     }
 
@@ -156,3 +155,33 @@ bool abRT::Scene::Render(abImage &outputImage) {
 
     return 1;
 } 
+
+
+bool abRT::Scene::CastRay(abRT::Ray &castRay, std::shared_ptr<abRT::ObjectBase> &closestObject, abVector<double> &closestIntPoint, abVector<double> &closestLocalNormal, abVector<double> &closestLocalColor) {
+
+    abVector<double> intPoint {3};
+    abVector<double> localNormal {3};
+    abVector<double> localColor {3};
+
+    double minDist = 1e6;
+    bool intersectionFound = false;
+    for(auto currentObject : m_objectList) {
+        bool validInt = currentObject -> TestIntersections(castRay, intPoint, localNormal, localColor);
+
+        if(validInt) {
+            intersectionFound = true;
+
+            double dist = (intPoint - castRay.m_point1).Norm();
+
+            if(dist < minDist) {
+                minDist = dist;
+                closestObject = currentObject;
+                closestLocalNormal = localNormal;
+                closestIntPoint = intPoint;
+                closestLocalColor = localColor;
+            }
+        }
+    }
+
+    return intersectionFound;
+}
