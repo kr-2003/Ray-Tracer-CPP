@@ -203,8 +203,8 @@ int Matrix2<T>::MaxElementRow(int c) const {
     int cols = GetNumCols();
     T maxel = m_matrixData[0 * cols + c];
     for(int i = 0; i < rows; i++) {
-        if(m_matrixData[i * cols + c] > maxel) {
-            maxel = m_matrixData[i * cols + c];
+        if(fabs(m_matrixData[i * cols + c]) > maxel) {
+            maxel = fabs(m_matrixData[i * cols + c]);
             ind = i;
         }
     }
@@ -556,6 +556,14 @@ bool Matrix2<T>::invertMatrix() {
     JoinMatrix(identity_matrix);
     int currRow = 0, currCol = 0;
     while(currRow < n && currCol < n) {
+        // for(int i = 0; i < m_nRows; i++) {
+        //     for(int j = 0; j < m_nCols; j++) {
+        //         std::cout << m_matrixData[i * m_nCols + j] << " ";
+        //     }
+        //     std::cout << std::endl;
+        // }
+        // std::cout << std::endl;
+
         T currPivotVal = GetElement(currRow, currCol);
         if(!CloseEnough(currPivotVal, 0.0)) {
             T fact = 1.0 / currPivotVal;
@@ -567,16 +575,39 @@ bool Matrix2<T>::invertMatrix() {
                     MultiplyRowAndAdd(currRow, r, fact);
                 }
             }
+            
         } else {
             int ind = MaxElementRow(currCol);
             SwapRows(ind, currRow);
-            continue;
+            currPivotVal = GetElement(currRow, currCol);
+            if(!CloseEnough(currPivotVal, 0.0)) {
+                T fact = 1.0 / currPivotVal;
+                MultiplyRow(currRow, fact);
+
+                for(int r = 0; r < n; r++) {
+                    if(r != currRow) {
+                        T fact = -GetElement(r, currCol);
+                        MultiplyRowAndAdd(currRow, r, fact);
+                    }
+                }
+            } 
         }
         currRow++;
         currCol++;
+
+        // std::cout << currRow << " " << currCol << std::endl;
     }
 
+    // for(int i = 0; i < m_nRows; i++) {
+    //     for(int j = 0; j < m_nCols; j++) {
+    //         std::cout << m_matrixData[i * m_nCols + j] << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
+
     Matrix2<T> left_matrix = SeparateMatrix(n);
+
+    
     if(!IsIdentity(left_matrix)) {
         throw std::invalid_argument("This matrix cannot be inverted.");
     }
@@ -592,8 +623,8 @@ bool Matrix2<T>::IsIdentity(const Matrix2<T>& mat) {
     }
     for(int i = 0; i < rows; i++) {
         for(int j = 0; j < cols; j++) {
-            if(i == j && mat.GetElement(i, j) != 1) return false;
-            if(i != j && mat.GetElement(i, j) != 0) return false;
+            if(i == j && !CloseEnough(mat.GetElement(i, j), 1)) return false;
+            if(i != j && !CloseEnough(mat.GetElement(i, j), 0)) return false;
         }
     }
     return true;

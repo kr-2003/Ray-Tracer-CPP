@@ -9,6 +9,11 @@ abRT::GTForm::~GTForm() {
 
 };
 
+abRT::GTForm::GTForm(const abVector<double> &translation, const abVector<double> &rotation, const abVector<double> &scale)
+{
+	SetTransform(translation, rotation, scale);
+}
+
 abRT::GTForm::GTForm(const Matrix2<double> &fwd, const Matrix2<double> &bck) {
     if ((fwd.GetNumRows() != 4) || (fwd.GetNumCols() != 4) || (bck.GetNumRows() != 4) || (bck.GetNumCols() != 4)) {
 		throw std::invalid_argument("Cannot construct GTform, inputs are not all 4x4.");
@@ -30,58 +35,55 @@ void abRT::GTForm::SetTransform (const abVector<double> &translation,
                                const abVector<double> &rotation,
                                const abVector<double> &scale)
 {
-    Matrix2<double> translationMatrix {4, 4};
-    Matrix2<double> rotationMatrixX   {4, 4};
-    Matrix2<double> rotationMatrixY   {4, 4};
-    Matrix2<double> rotationMatrixZ   {4, 4};
-    Matrix2<double> scaleMatrix       {4, 4};
+	Matrix2<double> translationMatrix	{4, 4};
+	Matrix2<double> rotationMatrixX		{4, 4};
+	Matrix2<double>	rotationMatrixY		{4, 4};
+	Matrix2<double> rotationMatrixZ		{4, 4};
+	Matrix2<double>	scaleMatrix				{4, 4};
+	
+	// Set these to identity.
+	translationMatrix.GetIdentityMatrix();
+	rotationMatrixX.GetIdentityMatrix();
+	rotationMatrixY.GetIdentityMatrix();
+	rotationMatrixZ.GetIdentityMatrix();
+	scaleMatrix.GetIdentityMatrix();
+	
+	// Populate these with the appropriate values.
+	// First the translation matrix.
+	translationMatrix.SetElement(0, 3, translation.GetElement(0));
+	translationMatrix.SetElement(1, 3, translation.GetElement(1));
+	translationMatrix.SetElement(2, 3, translation.GetElement(2));
+	
+	// Rotation matrices.
+	rotationMatrixZ.SetElement(0, 0, cos(rotation.GetElement(2)));
+	rotationMatrixZ.SetElement(0, 1, -sin(rotation.GetElement(2)));
+	rotationMatrixZ.SetElement(1, 0, sin(rotation.GetElement(2)));
+	rotationMatrixZ.SetElement(1, 1, cos(rotation.GetElement(2)));
+	
+	rotationMatrixY.SetElement(0, 0, cos(rotation.GetElement(1)));
+	rotationMatrixY.SetElement(0, 2, sin(rotation.GetElement(1)));
+	rotationMatrixY.SetElement(2, 0, -sin(rotation.GetElement(1)));
+	rotationMatrixY.SetElement(2, 2, cos(rotation.GetElement(1)));
+	
+	rotationMatrixX.SetElement(1, 1, cos(rotation.GetElement(0)));
+	rotationMatrixX.SetElement(1, 2, -sin(rotation.GetElement(0)));
+	rotationMatrixX.SetElement(2, 1, sin(rotation.GetElement(0)));
+	rotationMatrixX.SetElement(2, 2, cos(rotation.GetElement(0)));
+	
+	// And the scale matrix.
+	scaleMatrix.SetElement(0, 0, scale.GetElement(0));
+	scaleMatrix.SetElement(1, 1, scale.GetElement(1));
+	scaleMatrix.SetElement(2, 2, scale.GetElement(2));
 
-    translationMatrix.GetIdentityMatrix();
-    rotationMatrixX.GetIdentityMatrix();
-    rotationMatrixY.GetIdentityMatrix();
-    rotationMatrixZ.GetIdentityMatrix();
-    scaleMatrix.GetIdentityMatrix();
-
-    for(int i = 0; i < 3; i++) {
-        translationMatrix.SetElement(i, 3, translation.GetElement(i));
-    }
-    for(int i = 0; i < 3; i++) {
-        scaleMatrix.SetElement(i, i, scale.GetElement(i));
-    }
-
-    rotationMatrixX.SetElement(1, 1, cos(rotation.GetElement(0)));
-    rotationMatrixX.SetElement(1, 2, -sin(rotation.GetElement(0)));
-    rotationMatrixX.SetElement(2, 1, sin(rotation.GetElement(0)));
-    rotationMatrixX.SetElement(2, 2, cos(rotation.GetElement(0)));
-
-    rotationMatrixY.SetElement(0, 0, cos(rotation.GetElement(1)));
-    rotationMatrixY.SetElement(0, 2, sin(rotation.GetElement(1)));
-    rotationMatrixY.SetElement(2, 0, -sin(rotation.GetElement(1)));
-    rotationMatrixY.SetElement(2, 2, cos(rotation.GetElement(1)));
-
-    rotationMatrixZ.SetElement(0, 0, cos(rotation.GetElement(2)));
-    rotationMatrixZ.SetElement(0, 1, -sin(rotation.GetElement(2)));
-    rotationMatrixZ.SetElement(1, 0, sin(rotation.GetElement(2)));
-    rotationMatrixZ.SetElement(1, 1, cos(rotation.GetElement(2)));
-
-    // m_fwdtfm = translationMatrix * scaleMatrix;
-
-    // std::cout << translationMatrix << std::endl;
-    // std::cout << scaleMatrix << std::endl;
-    // std::cout << rotationMatrixX << std::endl;
-    // std::cout << rotationMatrixY << std::endl;
-    // std::cout << rotationMatrixZ << std::endl;
-
-    // m_fwdtfm = m_fwdtfm * rotationMatrixY * rotationMatrixZ;
     m_fwdtfm = translationMatrix * rotationMatrixX * rotationMatrixY * rotationMatrixZ * scaleMatrix;
 
-
-    // m_fwdtfm = translationMatrix * scaleMatrix * rotationMatrixX * rotationMatrixY * rotationMatrixZ;
+    // std::cout << m_fwdtfm << std::endl;
 
     m_bcktfm = m_fwdtfm;
 
-    // std::cout << m_fwdtfm << std::endl;
     m_bcktfm.invertMatrix();
+
+    // std::cout << m_bcktfm << std::endl;
 }
 
 abRT::Ray abRT::GTForm::Apply(const abRT::Ray &inputRay, bool dirFlag) {

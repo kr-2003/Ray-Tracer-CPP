@@ -10,6 +10,7 @@
 #include "objplane.hpp"
 #include "pointlight.hpp"
 #include "cylinder.hpp"
+#include "cone.hpp"
 
 namespace abRT {
     class Scene {

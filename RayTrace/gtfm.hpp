@@ -15,6 +15,8 @@ namespace abRT {
             GTForm();
             ~GTForm();
 
+            GTForm(const abVector<double> &translation, const abVector<double> &rotation, const abVector<double> &scale);
+
             GTForm(const Matrix2<double> &fwd, const Matrix2<double> &bck);
 
             void SetTransform (const abVector<double> &translation, 
