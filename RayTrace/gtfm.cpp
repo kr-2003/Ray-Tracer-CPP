@@ -73,7 +73,7 @@ void abRT::GTForm::SetTransform (const abVector<double> &translation,
     // std::cout << rotationMatrixZ << std::endl;
 
     // m_fwdtfm = m_fwdtfm * rotationMatrixY * rotationMatrixZ;
-    m_fwdtfm = translationMatrix * scaleMatrix * rotationMatrixX * rotationMatrixY * rotationMatrixZ;
+    m_fwdtfm = translationMatrix * rotationMatrixX * rotationMatrixY * rotationMatrixZ * scaleMatrix;
 
 
     // m_fwdtfm = translationMatrix * scaleMatrix * rotationMatrixX * rotationMatrixY * rotationMatrixZ;

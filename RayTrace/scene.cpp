@@ -40,7 +40,7 @@ abRT::Scene::Scene() {
     // test sphere
     m_objectList.push_back(std::make_shared<abRT::ObjSphere>(abRT::ObjSphere()));
     m_objectList.push_back(std::make_shared<abRT::ObjSphere>(abRT::ObjSphere()));
-    m_objectList.push_back(std::make_shared<abRT::ObjSphere>(abRT::ObjSphere()));
+    m_objectList.push_back(std::make_shared<abRT::Cylinder>(abRT::Cylinder()));
 
     // test plane
     m_objectList.push_back(std::make_shared<abRT::ObjPlane>(abRT::ObjPlane()));

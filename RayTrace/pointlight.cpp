@@ -16,6 +16,7 @@ bool abRT::PointLight::ComputeIllumination(const abVector<double> &intPoint, con
                                           abVector<double> &color, double &intensity) 
 {
     abVector<double> lightDir = (m_location - intPoint).Normalized();
+    double lightDist = (m_location - intPoint).Norm();
 
     abVector<double> startPoint = intPoint;
 
@@ -30,8 +31,14 @@ bool abRT::PointLight::ComputeIllumination(const abVector<double> &intPoint, con
         if(sceneObject != currObject) {
             validInt = sceneObject -> TestIntersections(lightRay, poi, poiNormal, poiColor);
             if(validInt) {
-                break;
+                double dist = (poi - startPoint).Norm();
+                if(dist > lightDist) {
+                    validInt = false;
+                }
             }
+        }
+        if(validInt) {
+            break;
         }
     }
 
