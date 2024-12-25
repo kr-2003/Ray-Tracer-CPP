@@ -44,3 +44,5 @@ The result is a high-quality image, but with increased computational cost compar
 - Added reflection and materials.
 
 ![Ray Tracer Example](./public/image-7.png)
+
+![Ray Tracer Example](./public/image-8.png)
