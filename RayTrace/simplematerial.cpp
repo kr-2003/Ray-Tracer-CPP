@@ -16,7 +16,10 @@ abVector<double> abRT::SimpleMaterial::ComputeColor(const std::vector<std::share
     abVector<double> spcColor{3};
 
     // Compute the diffused component
-    difColor = ComputeDiffuseColor(objectList, lightList, currentObject, intPoint, localNormal, m_baseColor);
+    if (!m_hasTexture)
+		difColor = ComputeDiffuseColor(objectList, lightList, currentObject, intPoint, localNormal, m_baseColor);
+	else
+		difColor = ComputeDiffuseColor(objectList, lightList, currentObject, intPoint, localNormal, m_textureList.at(0)->GetColor(currentObject->m_uvCoords));
 
     if (m_reflectivity > 0.0)
     {

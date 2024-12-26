@@ -11,6 +11,8 @@
 #include "pointlight.hpp"
 #include "cylinder.hpp"
 #include "cone.hpp"
+#include "checker.hpp"
+#include "flat.hpp"
 
 namespace abRT
 {

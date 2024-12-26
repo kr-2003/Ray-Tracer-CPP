@@ -44,6 +44,9 @@ bool abRT::ObjPlane::TestIntersections(const Ray &castRay, abVector<double> &int
 
                 localColor = m_baseColor;
 
+                m_uvCoords.SetElement(0, u);
+				m_uvCoords.SetElement(1, v);
+
                 return true;
             }
             else

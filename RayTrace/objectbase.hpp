@@ -26,6 +26,7 @@ namespace abRT
         abRT::GTForm m_transformMatrix;
         std::shared_ptr<abRT::MaterialBase> m_pMaterial;
         bool m_hasMaterial = false;
+        abVector<double> m_uvCoords {2};
     };
 };
 

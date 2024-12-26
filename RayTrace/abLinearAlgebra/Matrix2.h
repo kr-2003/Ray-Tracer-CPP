@@ -10,7 +10,7 @@ public:
     Matrix2();
     Matrix2(int nRows, int nCols);
     Matrix2(int nRows, int nCols, const T *inputData);
-    Matrix2(int nRows, int nCols, std::vector<T> &inputData);
+    Matrix2(int nRows, int nCols, const std::vector<T> &inputData);
     Matrix2(const Matrix2<T> &inputMatrix);
 
     ~Matrix2();
@@ -118,7 +118,7 @@ Matrix2<T>::Matrix2(int nRows, int nCols, const T *inputData)
 }
 
 template <class T>
-Matrix2<T>::Matrix2(int nRows, int nCols, std::vector<T> &inputData)
+Matrix2<T>::Matrix2(int nRows, int nCols, const std::vector<T> &inputData)
 {
     m_nRows = nRows;
     m_nCols = nCols;

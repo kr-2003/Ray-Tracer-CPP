@@ -142,6 +142,14 @@ bool abRT::Cone::TestIntersections(const abRT::Ray &castRay, abVector<double> &i
         // Return the base color.
         localColor = m_baseColor;
 
+        double x = validPOI.GetElement(0);
+		double y = validPOI.GetElement(1);
+		double z = validPOI.GetElement(2);
+		double u = atan2(y,x) / M_PI;
+		double v = (z * 2.0) + 1.0;
+		m_uvCoords.SetElement(0, u);
+		m_uvCoords.SetElement(1, v);
+
         return true;
     }
     else
@@ -164,6 +172,12 @@ bool abRT::Cone::TestIntersections(const abRT::Ray &castRay, abVector<double> &i
 
                 // Return the base color.
                 localColor = m_baseColor;
+
+                double x = validPOI.GetElement(0);
+				double y = validPOI.GetElement(1);
+				double z = validPOI.GetElement(2);
+				m_uvCoords.SetElement(0, x);
+				m_uvCoords.SetElement(1, y); 
 
                 return true;
             }

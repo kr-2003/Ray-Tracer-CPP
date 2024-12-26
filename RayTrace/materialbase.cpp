@@ -123,3 +123,9 @@ bool abRT::MaterialBase::CastRay(const abRT::Ray &castRay, const std::vector<std
 
     return intersectionFound;
 }
+
+void abRT::MaterialBase::AssignTexture(const std::shared_ptr<abRT::Texture::TextureBase> &inputTexture)
+{
+	m_textureList.push_back(inputTexture);
+	m_hasTexture = true;
+}

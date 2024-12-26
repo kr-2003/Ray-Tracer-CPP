@@ -5,6 +5,8 @@
 #include "./RayTrace/abImage.hpp"
 #include "./RayTrace/scene.hpp"
 #include "./RayTrace/camera.hpp"
+#include "./RayTrace/flat.hpp"
+#include "./RayTrace/checker.hpp"
 
 class CApp
 {

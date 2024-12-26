@@ -49,3 +49,9 @@ The result is a high-quality image, but with increased computational cost compar
 ![Ray Tracer Example](./public/image-7.png)
 
 ![Ray Tracer Example](./public/image-8.png)
+
+*[26/12/2024]**
+
+- Textures
+
+![Ray Tracer Example](./public/image-9.png)

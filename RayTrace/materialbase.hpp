@@ -6,6 +6,7 @@
 #include "lightbase.hpp"
 #include "./abLinearAlgebra/Vector.h"
 #include "ray.hpp"
+#include "texturebase.hpp"
 
 namespace abRT
 {
@@ -24,10 +25,13 @@ namespace abRT
 
         bool CastRay(const abRT::Ray &castRay, const std::vector<std::shared_ptr<abRT::ObjectBase>> &objectList, const std::shared_ptr<abRT::ObjectBase> &thisObject, std::shared_ptr<abRT::ObjectBase> &closestObject, abVector<double> &closestIntPoint, abVector<double> &closestLocalNormal, abVector<double> &closestLocalColor);
 
+        void AssignTexture(const std::shared_ptr<abRT::Texture::TextureBase> &inputTexture);
+
     public:
         inline static int m_maxRefrectionRays;
         inline static int m_reflectionRayCount;
-
+        std::vector<std::shared_ptr<abRT::Texture::TextureBase>> m_textureList;
+        bool m_hasTexture = false;
     private:
     };
 };
