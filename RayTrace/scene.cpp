@@ -5,6 +5,8 @@
 
 abRT::Scene::Scene()
 {
+    // Configure the camera.
+    // m_camera.SetPosition(	abVector<double>{std::vector<double> {3.0, -3.75, -3.0}} );
     m_camera.SetPosition(abVector<double>{std::vector<double>{3.0, -5.0, -2.0}});
     m_camera.SetLookAt(abVector<double>{std::vector<double>{0.0, 0.0, 0.0}});
     m_camera.SetUp(abVector<double>{std::vector<double>{0.0, 0.0, 1.0}});
@@ -13,6 +15,7 @@ abRT::Scene::Scene()
     // m_camera.SetAspect(1.0);
     m_camera.UpdateCameraGeometry();
 
+    // Create some materials.
     auto silverMetal = std::make_shared<abRT::SimpleMaterial>(abRT::SimpleMaterial());
     auto goldMetal = std::make_shared<abRT::SimpleMaterial>(abRT::SimpleMaterial());
     auto blueDiffuse = std::make_shared<abRT::SimpleMaterial>(abRT::SimpleMaterial());
@@ -21,6 +24,7 @@ abRT::Scene::Scene()
     auto floorMaterial = std::make_shared<abRT::SimpleMaterial>(abRT::SimpleMaterial());
     auto wallMaterial = std::make_shared<abRT::SimpleMaterial>(abRT::SimpleMaterial());
 
+    // Setup the materials.
     silverMetal->m_baseColor = abVector<double>{std::vector<double>{0.5, 0.5, 0.8}};
     silverMetal->m_reflectivity = 0.5;
     silverMetal->m_shininess = 20.0;
@@ -41,14 +45,15 @@ abRT::Scene::Scene()
     orangeDiffuse->m_reflectivity = 0.05;
     orangeDiffuse->m_shininess = 5.0;
 
-    floorMaterial->m_baseColor = abVector<double>{std::vector<double>{1.0, 1.0, 1.0}};
-    floorMaterial->m_reflectivity = 0.3;
-    floorMaterial->m_shininess = 2.0;
+    floorMaterial->m_baseColor = abVector<double>{std::vector<double>{0.0, 0.0, 0.0}};
+    floorMaterial->m_reflectivity = 0.5;
+    floorMaterial->m_shininess = 0.0;
 
-    wallMaterial->m_baseColor = abVector<double>{std::vector<double>{1.0, 0.1, 0.1}};
+    wallMaterial->m_baseColor = abVector<double>{std::vector<double>{1.0, 0.125, 0.125}};
     wallMaterial->m_reflectivity = 0.75;
-    wallMaterial->m_shininess = 1.0;
+    wallMaterial->m_shininess = 0.0;
 
+    // Create and setup objects.
     auto cone = std::make_shared<abRT::Cone>(abRT::Cone());
     cone->SetTransformMatrix(abRT::GTForm{abVector<double>{std::vector<double>{0.0, 0.0, -0.5}},
                                           abVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
@@ -81,7 +86,7 @@ abRT::Scene::Scene()
 
     auto leftWall = std::make_shared<abRT::ObjPlane>(abRT::ObjPlane());
     leftWall->SetTransformMatrix(abRT::GTForm{abVector<double>{std::vector<double>{-4.0, 0.0, 0.0}},
-                                              abVector<double>{std::vector<double>{0.0, -M_PI / 2.0, 0.0}},
+                                              abVector<double>{std::vector<double>{0.0, -M_PI / 2.0, -M_PI / 2.0}},
                                               abVector<double>{std::vector<double>{16.0, 16.0, 1.0}}});
     leftWall->AssignMaterial(wallMaterial);
 
@@ -90,7 +95,6 @@ abRT::Scene::Scene()
                                               abVector<double>{std::vector<double>{-M_PI / 2.0, 0.0, 0.0}},
                                               abVector<double>{std::vector<double>{16.0, 16.0, 1.0}}});
     backWall->AssignMaterial(wallMaterial);
-
 
     auto cylinder1 = std::make_shared<abRT::Cylinder>(abRT::Cylinder());
     cylinder1->SetTransformMatrix(abRT::GTForm{abVector<double>{std::vector<double>{-1.5, -2.0, 1.0}},
@@ -110,7 +114,7 @@ abRT::Scene::Scene()
                                            abVector<double>{std::vector<double>{0.5, 0.5, 1.0}}});
     cone2->AssignMaterial(goldMetal);
 
-    // // Put the objects into the scene.
+    // Put the objects into the scene.
     m_objectList.push_back(cone);
     m_objectList.push_back(leftSphere);
     m_objectList.push_back(rightSphere);
@@ -153,7 +157,7 @@ bool abRT::Scene::Render(abImage &outputImage)
     {
         for (int y = 0; y < ySize; y++)
         {
-            std::cout << x << " " << y << std::endl;
+            // std::cout << x << " " << y << std::endl;
             float normX = (static_cast<double>(x) * xFact) - 1.0;
             float normY = (static_cast<double>(y) * yFact) - 1.0;
 

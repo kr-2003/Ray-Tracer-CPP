@@ -6,19 +6,19 @@
 
 namespace abRT
 {
-	class Cone : public ObjectBase
-	{
-		public:
-			// Default constructor.
-			Cone();
-			
-			// Override the destructor.
-			virtual ~Cone() override;
-			
-			// Override the function to test for intersections.
-			virtual bool TestIntersections(	const abRT::Ray &castRay, abVector<double> &intPoint,
-																			abVector<double> &localNormal, abVector<double> &localColor) override;			
-	};
+    class Cone : public ObjectBase
+    {
+    public:
+        // Default constructor.
+        Cone();
+
+        // Override the destructor.
+        virtual ~Cone() override;
+
+        // Override the function to test for intersections.
+        virtual bool TestIntersections(const abRT::Ray &castRay, abVector<double> &intPoint,
+                                       abVector<double> &localNormal, abVector<double> &localColor) override;
+    };
 }
 
 #endif

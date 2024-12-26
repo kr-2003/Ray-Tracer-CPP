@@ -12,19 +12,20 @@
 #include "cylinder.hpp"
 #include "cone.hpp"
 
-namespace abRT {
-    class Scene {
-        public:
-            Scene();
-            bool Render(abImage &outputImage);
-            bool CastRay(abRT::Ray &castRay, std::shared_ptr<abRT::ObjectBase> &closestObject, abVector<double> &closestIntPoint, abVector<double> &closestLocalNormal, abVector<double> &closestLocalColor);
+namespace abRT
+{
+    class Scene
+    {
+    public:
+        Scene();
+        bool Render(abImage &outputImage);
+        bool CastRay(abRT::Ray &castRay, std::shared_ptr<abRT::ObjectBase> &closestObject, abVector<double> &closestIntPoint, abVector<double> &closestLocalNormal, abVector<double> &closestLocalColor);
 
-        private:
-        
-        private:
-            abRT::Camera m_camera;
-            std::vector<std::shared_ptr<abRT::ObjectBase>> m_objectList;
-            std::vector<std::shared_ptr<abRT::LightBase>> m_lightList;
+    private:
+    private:
+        abRT::Camera m_camera;
+        std::vector<std::shared_ptr<abRT::ObjectBase>> m_objectList;
+        std::vector<std::shared_ptr<abRT::LightBase>> m_lightList;
     };
 };
 

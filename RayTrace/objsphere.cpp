@@ -1,12 +1,12 @@
 #include "objsphere.hpp"
 #include <cmath>
 
-abRT::ObjSphere::ObjSphere() {
-
+abRT::ObjSphere::ObjSphere()
+{
 }
 
-abRT::ObjSphere::~ObjSphere() {
-    
+abRT::ObjSphere::~ObjSphere()
+{
 }
 
 // bool abRT::ObjSphere::TestIntersections(const abRT::Ray &castRay, abVector<double> &intPoint, abVector<double> &localNormal, abVector<double> &localColor) {
@@ -45,7 +45,8 @@ abRT::ObjSphere::~ObjSphere() {
 //     return false;
 // }
 
-bool abRT::ObjSphere::TestIntersections(const abRT::Ray &castRay, abVector<double> &intPoint, abVector<double> &localNormal, abVector<double> &localColor) {
+bool abRT::ObjSphere::TestIntersections(const abRT::Ray &castRay, abVector<double> &intPoint, abVector<double> &localNormal, abVector<double> &localColor)
+{
 
     abRT::Ray bckRay = m_transformMatrix.Apply(castRay, abRT::BCKTFORM);
 
@@ -64,24 +65,31 @@ bool abRT::ObjSphere::TestIntersections(const abRT::Ray &castRay, abVector<doubl
 
     abVector<double> poi;
 
-    if(intTest > 0.0) {
+    if (intTest > 0.0)
+    {
         double numSQRT = sqrtf(intTest);
         double t1 = (-b + numSQRT) / 2.0;
         double t2 = (-b - numSQRT) / 2.0;
 
-        if(t1 < 0.0 || t2 < 0.0) {
+        if (t1 < 0.0 || t2 < 0.0)
+        {
             return false;
-        } else {
-            if(t1 < t2) {
+        }
+        else
+        {
+            if (t1 < t2)
+            {
                 poi = bckRay.m_point1 + (vhat * t1);
-            } else {
+            }
+            else
+            {
                 poi = bckRay.m_point1 + (vhat * t2);
             }
 
             intPoint = m_transformMatrix.Apply(poi, abRT::FWDTFORM);
 
             std::vector<double> tempdata = {0.0, 0.0, 0.0};
-            abVector<double> objOrigin = abVector<double> {tempdata};
+            abVector<double> objOrigin = abVector<double>{tempdata};
             abVector<double> newObjOrigin = m_transformMatrix.Apply(objOrigin, abRT::FWDTFORM);
             localNormal = intPoint - newObjOrigin;
             localNormal = localNormal.Normalized();
@@ -92,7 +100,3 @@ bool abRT::ObjSphere::TestIntersections(const abRT::Ray &castRay, abVector<doubl
     }
     return false;
 }
-
-
-
-
