@@ -16,42 +16,22 @@ The result is a high-quality image, but with increased computational cost compar
 
 **[21/12/2024]**
 
-![Ray Tracer Example](./public/sphere-1.png)
+| ![Ray Tracer Example](./public/sphere-1.png) | ![Ray Tracer Example](./public/sphere-2.png) |
+|----------------------------------------------|----------------------------------------------|
+| Added point light source.                    | Added geometric transformations.             |
 
 **[22/12/2024]**
 
-- Added point light source.
+| ![Ray Tracer Example](./public/image-4.png)  | ![Ray Tracer Example](./public/image-5.png)  |
+|----------------------------------------------|----------------------------------------------|
+| Added plane.                                 | Shadows                                      |
 
-![Ray Tracer Example](./public/sphere-2.png)
-
-- Added geometric transformations.
-
-![Ray Tracer Example](./public/sphere-3.png)
-
-**[22/12/2024]**
-
-- Added plane.
-
-![Ray Tracer Example](./public/image-4.png)
-
-- Shadows
-
-![Ray Tracer Example](./public/image-5.png)
-
-- Multiple lights and shadows
-
-![Ray Tracer Example](./public/image-6.png)
+| ![Ray Tracer Example](./public/image-6.png)  | ![Ray Tracer Example](./public/image-7.png)  |
+|----------------------------------------------|----------------------------------------------|
+| Multiple lights and shadows                  | Added reflection and materials.              |
 
 **[25/12/2024]**
 
-- Added reflection and materials.
-
-![Ray Tracer Example](./public/image-7.png)
-
-![Ray Tracer Example](./public/image-8.png)
-
-**[26/12/2024]**
-
-- Textures
-
-![Ray Tracer Example](./public/image-9.png)
+| ![Ray Tracer Example](./public/image-8.png)  | ![Ray Tracer Example](./public/image-9.png)  |
+|----------------------------------------------|----------------------------------------------|
+| Added reflection and materials.              | Textures                                     |
